@@ -1,25 +1,81 @@
-// we declare a new global variable containing an array that represents the ballons map
-// you have to add more colors into the ballonsMap array
-let ballonsMap = ['green'];
+const BALLOONS_COUNT = 20;
 
-// poping a balloon is basically turning his color to null (no color)
-const popBalloon = (position) => {
-    // set the color to null on the balloon position
-    render();
-}
+const popBalloon = new Event("popBalloon")
+const balloonCountElement = document.querySelector("#balloon-count")
+const balloonsByColorElement = document.querySelector("#balloons-by-color")
 
 const render = () => {
-    
-    // convert ballons map of colors into real html balloons
-    const ballons = ballonsMap.map((color, position) => {
-        return `<div class="balloon active"></div>`; // <--- render each balloon
-    });
+    const headerBalloons = Balloon.balloonColors.map(color => new Balloon().getHeaderBalloon(color))
+    balloonsByColorElement.append(...headerBalloons)
 
-    document.querySelector("#balloon-count").innerHTML = ballons.filter(b => b !== null).length; // <-- render the balloon count into the DOM
-    document.querySelector("#balloon-map").innerHTML = ballons.join(''); // <-- render the balloons into the DOM
+    const balloons = [];
 
-    if(activeBalloons == 0) window.location.reload(); // <--- reload website when no more balloons are left
+    for (let i = 0; i < BALLOONS_COUNT; i++) {
+        balloons.push(new Balloon().getGameBalloon())
+    }
+
+    balloonCountElement.innerHTML = BALLOONS_COUNT
+
+    document.querySelector("#balloon-map").append(...balloons)
 }
 
-// this makes the "render" function trigger when the website starts existing
+class Balloon {
+    static balloonColors = [ 'purple', 'blue', 'spring-green', 'darkcyan' ]
+
+    constructor() {
+        this.balloon = document.createElement("div")
+    }
+
+    getRandomColor() {
+        const randomIndex = Math.floor(Math.random() * Balloon.balloonColors.length)
+
+        return Balloon.balloonColors[randomIndex]
+    }
+
+    getHeaderBalloon(color) {
+        this.balloon.className = "balloon"
+        this.balloon.style.background = color
+
+        return this.balloon
+    }
+
+    getGameBalloon() {
+        this.balloon.className = "balloon active"
+        this.balloon.style.background = this.getRandomColor()
+        this.balloon.addEventListener("popBalloon", poppedBalloon)
+        this.balloon.addEventListener("click", function() {
+            this.dispatchEvent(popBalloon)
+        })
+
+        return this.balloon
+    }
+}
+
+function poppedBalloon(event) {
+    event.currentTarget.className = "balloon popped"
+
+    balloonCountElement.innerHTML--
+    const activeBalloons = balloonCountElement.innerHTML
+    
+    if (activeBalloons == 0) {
+        window.location.reload()
+    }
+}
+
+function filterByColor() {
+    const result = {}
+
+    document.querySelectorAll(".active").forEach(element => {
+        if (!result[element.style.background]) {
+            result[element.style.background] = 1
+        } else {
+            result[element.style.background]++
+        }
+    })
+
+    console.log(result)
+}
+
+
+
 window.onload = render();
