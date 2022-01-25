@@ -74,6 +74,8 @@ function poppedBalloon(event) {
     event.currentTarget.className = "balloon popped"
 
     balloonCountElement.innerHTML--
+    document.querySelector("#" + event.currentTarget.style.backgroundColor + "-counter").innerHTML--
+
     const activeBalloons = balloonCountElement.innerHTML
     
     if (activeBalloons == 0) {
