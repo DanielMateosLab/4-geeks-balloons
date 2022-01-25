@@ -36,7 +36,16 @@ class Balloon {
         this.balloon.className = "balloon"
         this.balloon.style.background = color
 
-        return this.balloon
+        const containerElement = document.createElement("div")
+        containerElement.className = "header-balloon-container"
+        
+        const countElement = document.createElement("h3")
+        countElement.innerText = 1
+
+        containerElement.append(this.balloon)
+        containerElement.append(countElement)
+
+        return containerElement
     }
 
     getGameBalloon() {

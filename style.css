@@ -1,4 +1,4 @@
-h1{ text-align: center; margin-bottom: 50px;}
+h1{ text-align: center; margin-bottom: 2rem;}
 #balloon-map{
     width: 224px;
     display: flex;
@@ -8,7 +8,6 @@ h1{ text-align: center; margin-bottom: 50px;}
 }
 .balloon {
     position: relative;
-    flex-grow: 1;
     width: 50px;
     margin: 3px;
     background: rgb(20,189,34);
@@ -33,6 +32,25 @@ h1{ text-align: center; margin-bottom: 50px;}
 .balloon.popped { visibility: hidden; }
 .balloon.popped:after { visibility: hidden; }
 
+#balloons-by-color {
+  display: flex;
+  gap: 0.5rem;
+
+  margin: auto;
+  margin-bottom: 2rem;
+  border: 1px solid black;
+  padding: 0.5rem;
+  width: max-content;
+}
+
+.header-balloon-container {
+  display: flex;
+  gap: 0.25rem;
+}
+.header-balloon-container > .balloon {
+  animation: none;
+  cursor: initial;
+}
 
 
 /* ANIMATIONS */
