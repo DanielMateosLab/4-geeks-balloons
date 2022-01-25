@@ -81,20 +81,4 @@ function poppedBalloon(event) {
     }
 }
 
-function filterByColor() {
-    const result = {}
-
-    document.querySelectorAll(".active").forEach(element => {
-        if (!result[element.style.background]) {
-            result[element.style.background] = 1
-        } else {
-            result[element.style.background]++
-        }
-    })
-
-    console.log(result)
-}
-
-
-
 window.onload = render();
