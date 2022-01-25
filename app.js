@@ -15,12 +15,12 @@ const render = () => {
     }
 
     balloonCountElement.innerHTML = BALLOONS_COUNT
-
     document.querySelector("#balloon-map").append(...balloons)
+    Balloon.setBallonHeaderCounter()
 }
 
 class Balloon {
-    static balloonColors = [ 'purple', 'blue', 'spring-green', 'darkcyan' ]
+    static balloonColors = [ 'purple', 'blue', 'springgreen', 'darkcyan' ]
 
     constructor() {
         this.balloon = document.createElement("div")
@@ -38,9 +38,10 @@ class Balloon {
 
         const containerElement = document.createElement("div")
         containerElement.className = "header-balloon-container"
-        
+
         const countElement = document.createElement("h3")
-        countElement.innerText = 1
+        countElement.id = color + "-counter"
+        countElement.innerText = 0
 
         containerElement.append(this.balloon)
         containerElement.append(countElement)
@@ -57,6 +58,15 @@ class Balloon {
         })
 
         return this.balloon
+    }
+
+    static setBallonHeaderCounter() {
+        const activeBalloons = document.querySelectorAll(".balloon.active")
+        
+        activeBalloons.forEach(balloon => {
+            const balloonColor = balloon.style.backgroundColor
+            document.querySelector("#" + balloonColor + "-counter").innerHTML++
+        })
     }
 }
 
