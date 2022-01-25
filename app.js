@@ -22,6 +22,15 @@ const render = () => {
 class Balloon {
     static balloonColors = [ 'purple', 'blue', 'springgreen', 'darkcyan' ]
 
+    static setBallonHeaderCounter() {
+        const activeBalloons = document.querySelectorAll(".balloon.active")
+        
+        activeBalloons.forEach(balloon => {
+            const balloonColor = balloon.style.backgroundColor
+            document.querySelector("#" + balloonColor + "-counter").innerHTML++
+        })
+    }
+
     constructor() {
         this.balloon = document.createElement("div")
     }
@@ -58,15 +67,6 @@ class Balloon {
         })
 
         return this.balloon
-    }
-
-    static setBallonHeaderCounter() {
-        const activeBalloons = document.querySelectorAll(".balloon.active")
-        
-        activeBalloons.forEach(balloon => {
-            const balloonColor = balloon.style.backgroundColor
-            document.querySelector("#" + balloonColor + "-counter").innerHTML++
-        })
     }
 }
 
