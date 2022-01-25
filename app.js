@@ -20,7 +20,7 @@ const render = () => {
 }
 
 class Balloon {
-    static balloonColors = [ 'purple', 'blue', 'springgreen', 'darkcyan' ]
+    static balloonColors = [ 'purple', 'cornflowerblue', 'springgreen', 'crimson' ]
 
     static setBallonHeaderCounter() {
         const activeBalloons = document.querySelectorAll(".balloon.active")
@@ -74,6 +74,7 @@ function poppedBalloon(event) {
     event.currentTarget.className = "balloon popped"
 
     balloonCountElement.innerHTML--
+    // TODO: create a helper function for this query selector (selectCounterOfBalloonColor(color))
     document.querySelector("#" + event.currentTarget.style.backgroundColor + "-counter").innerHTML--
 
     const activeBalloons = balloonCountElement.innerHTML
