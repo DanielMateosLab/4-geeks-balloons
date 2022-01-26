@@ -1,26 +1,30 @@
 const BALLOONS_COUNT = 20;
-
 const popBalloon = new Event("popBalloon")
-const balloonCountElement = document.querySelector("#balloon-count")
+
+const totalBalloonsCountElement = document.querySelector("#balloon-count")
 const balloonsByColorElement = document.querySelector("#balloons-by-color")
 
 const render = () => {
-    const headerBalloons = Balloon.balloonColors.map(color => new Balloon().getHeaderBalloon(color))
+    // Create and place header balloons
+    const headerBalloons = Balloon.getAllHeaderBalloons()
     balloonsByColorElement.append(...headerBalloons)
+    
+    // Create and place game balloons
+    const gameBalloons = Balloon.getNGameBalloons(BALLOONS_COUNT)
+    document.querySelector("#balloon-map").append(...gameBalloons)
 
-    const balloons = [];
-
-    for (let i = 0; i < BALLOONS_COUNT; i++) {
-        balloons.push(new Balloon().getGameBalloon())
-    }
-
-    balloonCountElement.innerHTML = BALLOONS_COUNT
-    document.querySelector("#balloon-map").append(...balloons)
+    
+    // Set counters' value
+    totalBalloonsCountElement.innerHTML = BALLOONS_COUNT
     Balloon.setBallonHeaderCounter()
 }
 
 class Balloon {
     static balloonColors = [ 'purple', 'cornflowerblue', 'springgreen', 'crimson' ]
+
+    static getAllHeaderBalloons() {
+        return Balloon.balloonColors.map(color => new Balloon().getOneHeaderBalloon(color))
+    }
 
     static setBallonHeaderCounter() {
         const activeBalloons = document.querySelectorAll(".balloon.active")
@@ -29,6 +33,16 @@ class Balloon {
             const balloonColor = balloon.style.backgroundColor
             document.querySelector("#" + balloonColor + "-counter").innerHTML++
         })
+    }
+
+    static getNGameBalloons(n) {
+        const gameBalloons = []
+        
+        for (let i = 0; i < n; i++) {
+            gameBalloons.push(new Balloon().getGameBalloon())
+        }
+    
+        return gameBalloons
     }
 
     constructor() {
@@ -41,7 +55,7 @@ class Balloon {
         return Balloon.balloonColors[randomIndex]
     }
 
-    getHeaderBalloon(color) {
+    getOneHeaderBalloon(color) {
         this.balloon.className = "balloon"
         this.balloon.style.background = color
 
@@ -71,17 +85,22 @@ class Balloon {
 }
 
 function poppedBalloon(event) {
-    event.currentTarget.className = "balloon popped"
+    const poppedBalloonElement = event.currentTarget
+    const colorCounterElement = getCounterOfColor(poppedBalloonElement.style.backgroundColor)
 
-    balloonCountElement.innerHTML--
-    // TODO: create a helper function for this query selector (selectCounterOfBalloonColor(color))
-    document.querySelector("#" + event.currentTarget.style.backgroundColor + "-counter").innerHTML--
+    poppedBalloonElement.className = "balloon popped"
+    totalBalloonsCountElement.innerHTML--
+    colorCounterElement.innerHTML--
 
-    const activeBalloons = balloonCountElement.innerHTML
-    
+    const activeBalloons = totalBalloonsCountElement.innerHTML    
     if (activeBalloons == 0) {
         window.location.reload()
     }
 }
+
+function getCounterOfColor(color) {
+    return document.querySelector("#" + color + "-counter")
+}
+
 
 window.onload = render();
